@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page Test Vue</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js">
+    </script>
+</head>
+<body>
+
+<div id="app">
+    <input v-model="message">
+    {{ message }}
+
+    <ul>
+        <li v-for="item in items">
+            {{item}}
+        </li>
+    </ul>
+    <button @click="clickme">Click Me</button>
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            'message': 'Olá',
+            'items' : ['abacaxi', 'laranja', 'uva']
+        },
+        methods: {
+            clickme: function () {
+                alert('Olá: ');                
+            } 
+        }
+    });
+</script>
+
+</body>
+</html>
