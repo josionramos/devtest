@@ -14,7 +14,7 @@
     Vue.component('radio-button', {
         props: ['name', 'label', 'value', 'extra'],
         template: `
-        <label class="radio-color" :class="{ 'is-active': isActive }" :title="label">
+        <label class="radio-color" :class="{ 'is-active': isActive }" :title="label.value">
             <input type="radio" :value="label" :name="name" v-model="radioButtonValue">
             <span class="checkable" :style="backgroundColor">{{ label.id }}</span>
         </label>
