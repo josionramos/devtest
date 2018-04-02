@@ -16,16 +16,18 @@
         template: `
         <label class="radio-color" :class="{ 'is-active': isActive }" :title="label">
             <input type="radio" :value="label" :name="name" v-model="radioButtonValue">
-            <span class="checkable" :style="backgroundColor">{{ label }}</span>
+            <span class="checkable" :style="backgroundColor">{{ label.id }}</span>
         </label>
         `,
         computed: {
             radioButtonValue: {
                 get: function() {
+                    console.log("get " + this.value)
                     return this.value
                 },
                 set: function() {
                     // Communicate the change to parent component so that selectedValue can be updated
+                    console.log("set " + this.label.id)
                     this.$emit("change", this.label)
                 }
             },
@@ -35,10 +37,13 @@
                 }
             },
             isActive () {
-                console.log(this.value + " == " + this.label);
-                return this.value == this.label
+                if (this.value) {
+                    console.log("isActive " + this.value.id + " == " + this.label.id);    
+                } else {
+                    console.log("isActive  vazio == " + this.label.id);
+                }
+                return this.value === this.label;
             }
-
         }
     });
     
@@ -47,7 +52,7 @@
         template: `
         <div>
             <div v-for="color in colors">
-                <radio-button name="options" :extra="color.extra" :label="color.id" :value="selectedValue" @change="changeValue"/>
+                <radio-button name="options" :extra="color.extra" :label="color" :value="selectedValue" @change="changeValue"/>
             </div>
             <div class="result">
                     Radio button selection: {{selectedValue}} - {{colors}}
@@ -56,7 +61,7 @@
         `,
         data: function() {
             return {
-                selectedValue: "1"
+                selectedValue: null
             };
         },
         methods: {
@@ -82,6 +87,11 @@
                             'id': '2',
                             'extra': 'blue',
                             'value': 'azul'
+                        },
+                        {
+                            'id': '3',
+                            'extra': 'black',
+                            'value': 'preto'
                         }
                     ]
                 }
@@ -93,17 +103,14 @@
     margin: 20px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
-
     label.radio {
     margin-right: 20px;
     }
-
     .result {
     margin-top: 15px;
     border-top: 1px solid #DDD;
     padding-top: 15px;
     }
-
     .radio-color {
         width: 3.4rem;
         height: 3.4rem;
