@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page Test Vue</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js">
+    </script>
+</head>
+<body>
+
+<div id="app">
+</div>
+
+<script>
+    Vue.component('radio-button', {
+        props: ['name', 'label', 'value', 'extra'],
+        template: `
+        <label class="radio-color" :class="{ 'is-active': isActive }" :title="label">
+            <input type="radio" :value="label" :name="name" v-model="radioButtonValue">
+            <span class="checkable" :style="backgroundColor">{{ label }}</span>
+        </label>
+        `,
+        computed: {
+            radioButtonValue: {
+                get: function() {
+                    return this.value
+                },
+                set: function() {
+                    // Communicate the change to parent component so that selectedValue can be updated
+                    this.$emit("change", this.label)
+                }
+            },
+            backgroundColor () {
+                return {
+                    backgroundColor: this.extra
+                }
+            },
+            isActive () {
+                console.log(this.value + " == " + this.label);
+                return this.value == this.label
+            }
+
+        }
+    });
+    
+    Vue.component('example-form', {
+        props: ['colors'],
+        template: `
+        <div>
+            <div v-for="color in colors">
+                <radio-button name="options" :extra="color.extra" :label="color.id" :value="selectedValue" @change="changeValue"/>
+            </div>
+            <div class="result">
+                    Radio button selection: {{selectedValue}} - {{colors}}
+            </div>
+        </div>
+        `,
+        data: function() {
+            return {
+                selectedValue: "1"
+            };
+        },
+        methods: {
+            changeValue: function(newValue) {
+                this.selectedValue = newValue;
+            }
+        }
+    });
+</script>
+        
+<script>
+        new Vue({
+                el: '#app',
+                template: '<example-form :colors="colors"></example-form>',
+                data: {
+                    'colors' : [
+                        {
+                            'id': '1',
+                            'extra': 'red',
+                            'value': 'vermelho'
+                        },
+                        {
+                            'id': '2',
+                            'extra': 'blue',
+                            'value': 'azul'
+                        }
+                    ]
+                }
+        });
+</script>
+
+<style>
+    body {
+    margin: 20px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    label.radio {
+    margin-right: 20px;
+    }
+
+    .result {
+    margin-top: 15px;
+    border-top: 1px solid #DDD;
+    padding-top: 15px;
+    }
+
+    .radio-color {
+        width: 3.4rem;
+        height: 3.4rem;
+        position: relative;
+        border: 1px solid #898989;
+        cursor: pointer;
+        margin-right: 1rem;
+        display: inline-block;
+    }
+    
+    .checkable {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: 0;
+        width: 1.4rem;
+        height: 1.4rem;
+        transform: translate(-50%, -50%);
+        background-color: red;
+        border: none;
+    }
+    
+    .is-active {
+      border-color: rgb(0, 0, 0)
+    }
+    
+    input {
+        display: none;
+    }
+      
+</style>

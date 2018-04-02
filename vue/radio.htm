@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page Test Vue</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js">
+    </script>
+</head>
+<body>
+
+<div id="app">
+    <label>Cores</label>
+    <div v-if="colors.length > 0">
+        <label v-for="color in colors" class="radio-color" :key="color.id" :title="color.value">
+            <input type="radio" :value="color">
+            <span class="checkable">{{color.extra}}</span>
+        </lab>
+    </div>
+</div>
+
+<script>
+new Vue({
+        el: '#app',
+        data: {
+            'colors' : [
+                {
+                  'id': '1',
+                  'extra': 'red',
+                  'value': 'vermelho'
+                },
+                {
+                  'id': '2',
+                  'extra': 'blue',
+                  'value': 'azul'
+                }
+            ]
+        }
+});
+</script>
+
+<script>
+export default {
+    props: {
+      value: {},
+      color: {
+        type: Object,
+        required: true
+      }
+    },
+    data () {
+      return {
+        newValue: this.value
+      }
+    },
+    
+    computed: {
+      backgroundColor () {
+        return {
+          backgroundColor: 'red'
+        }
+      }
+    }
+  }
+
+</script>
+
+<style>
+    .radio-color {
+        width: 3.4rem;
+        height: 3.4rem;
+        position: relative;
+        border: 1px solid #898989;
+        cursor: pointer;
+        margin-right: 1rem;
+        display: inline-block;
+    }
+    
+    .checkable {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: 0;
+        width: 1.4rem;
+        height: 1.4rem;
+        transform: translate(-50%, -50%);
+        background-color: red;
+        border: none;
+    }
+    
+    .is-active {
+        border-color: #000;
+    }
+    
+    input {
+        display: none;
+    }
+      
+</style>
